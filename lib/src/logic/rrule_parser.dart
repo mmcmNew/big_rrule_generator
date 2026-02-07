@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+import 'dart:developer' as developer;
 import 'package:intl/intl.dart';
 
 /// Data class representing RRULE components
@@ -81,7 +81,7 @@ class RRuleParser {
               data.exdate.add(date);
             }
           } catch (e) {
-            debugPrint('Error parsing exDate: $d');
+            developer.log('Error parsing exDate: $d', name: 'RRuleParser');
           }
         }
       }
@@ -105,7 +105,7 @@ class RRuleParser {
       parts.add('INTERVAL=${data.interval}');
     }
     
-    // Дни недели - обязательно для WEEKLY
+    // Weekdays are required for WEEKLY rules.
     if (data.frequency == 'WEEKLY') {
       if (data.byday.isEmpty) {
         data.byday = [_getWeekdayFromDate(startDate)];
@@ -122,13 +122,13 @@ class RRuleParser {
       parts.add('BYMONTHDAY=${startDate.day}');
     }
     
-    // Часы для внутридневного повторения (не для MINUTELY/HOURLY)
+    // Hours for intra-day recurrence (not for MINUTELY/HOURLY).
     if (data.byhour.isNotEmpty && data.frequency != 'MINUTELY' && data.frequency != 'HOURLY') {
       data.byhour.sort();
       parts.add('BYHOUR=${data.byhour.join(',')}');
     }
     
-    // Окончание правила
+    // Rule ending.
     if (data.endType == 'COUNT') {
       parts.add('COUNT=${data.count}');
     } else if (data.endType == 'UNTIL') {
@@ -136,7 +136,7 @@ class RRuleParser {
       parts.add('UNTIL=${formatted}T235959Z');
     }
     
-    // Исключенные даты (с точным временем если есть)
+    // Excluded dates (with exact time if present).
     if (data.exdate.isNotEmpty) {
       data.exdate.sort((a, b) => a.compareTo(b));
       final exDatesStr = data.exdate

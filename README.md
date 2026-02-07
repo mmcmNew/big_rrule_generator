@@ -2,9 +2,7 @@
 
 A Flutter widget for visually creating iCalendar RRULE recurrence rules for calendar events.
 
-![Demo](https://github.com/yourusername/calendar_rrule_generator/raw/main/demo.gif)
-
-This package provides a beautiful and easy-to-use UI for generating RFC 5545 RRULE strings, perfect for calendar applications that need recurrence functionality.
+This package provides a clean UI for generating RFC 5545 RRULE strings, perfect for calendar applications that need recurrence functionality.
 
 ## Features
 
@@ -75,13 +73,18 @@ RRuleGenerator(
 
 ```dart
 String description = describeRRule('FREQ=WEEKLY;INTERVAL=1;BYDAY=MO,WE,FR');
-print(description); // Output: "Еженедельно (Пн, Ср, Пт)"
+print(description); // Output: "Weekly (Mon, Wed, Fri)"
 ```
 
 ## Additional information
 
-This package was created as part of the Secretary Flutter application and extracted for wider community use. It follows the iCalendar RFC 5545 specification for recurrence rules.
+This package follows the iCalendar RFC 5545 specification for recurrence rules.
 
 Contributions are welcome! Please feel free to submit issues or pull requests on GitHub.
 
 For more information about RRULE format, see the [iCalendar RFC 5545 specification](https://tools.ietf.org/html/rfc5545).
+
+### Links
+
+- Repository: https://github.com/mmcmNew/calendar_rrule_generator
+- Issue tracker: https://github.com/mmcmNew/calendar_rrule_generator/issues

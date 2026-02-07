@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:calendar_rrule_generator/src/ui/rrule_localizations.dart';
 
 /// Widget for selecting recurrence frequency
 /// 
@@ -19,11 +20,13 @@ import 'package:flutter/material.dart';
 class FrequencySection extends StatelessWidget {
   final String frequency;
   final ValueChanged<String> onFrequencyChanged;
+  final RRuleLocalizations localizations;
   
   const FrequencySection({
     super.key,
     required this.frequency,
     required this.onFrequencyChanged,
+    this.localizations = RRuleLocalizations.english,
   });
   
   @override
@@ -32,7 +35,10 @@ class FrequencySection extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('Частота:', style: TextStyle(fontWeight: FontWeight.bold)),
+        Text(
+          localizations.frequencyLabel,
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
         const SizedBox(height: 8),
         DropdownButtonFormField<String>(
           initialValue: frequency,
@@ -40,13 +46,31 @@ class FrequencySection extends StatelessWidget {
             border: OutlineInputBorder(),
             contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
           ),
-          items: const [
-            DropdownMenuItem(value: 'MINUTELY', child: Text('Каждые N минут')),
-            DropdownMenuItem(value: 'HOURLY', child: Text('Каждые N часов')),
-            DropdownMenuItem(value: 'DAILY', child: Text('Ежедневно')),
-            DropdownMenuItem(value: 'WEEKLY', child: Text('Еженедельно')),
-            DropdownMenuItem(value: 'MONTHLY', child: Text('Ежемесячно')),
-            DropdownMenuItem(value: 'YEARLY', child: Text('Ежегодно')),
+          items: [
+            DropdownMenuItem(
+              value: 'MINUTELY',
+              child: Text(localizations.frequencyOptionLabel('MINUTELY')),
+            ),
+            DropdownMenuItem(
+              value: 'HOURLY',
+              child: Text(localizations.frequencyOptionLabel('HOURLY')),
+            ),
+            DropdownMenuItem(
+              value: 'DAILY',
+              child: Text(localizations.frequencyOptionLabel('DAILY')),
+            ),
+            DropdownMenuItem(
+              value: 'WEEKLY',
+              child: Text(localizations.frequencyOptionLabel('WEEKLY')),
+            ),
+            DropdownMenuItem(
+              value: 'MONTHLY',
+              child: Text(localizations.frequencyOptionLabel('MONTHLY')),
+            ),
+            DropdownMenuItem(
+              value: 'YEARLY',
+              child: Text(localizations.frequencyOptionLabel('YEARLY')),
+            ),
           ],
           onChanged: (value) => onFrequencyChanged(value!),
         ),

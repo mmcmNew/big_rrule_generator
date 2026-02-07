@@ -8,6 +8,7 @@ import 'package:calendar_rrule_generator/src/ui/sections/byhour_section.dart';
 import 'package:calendar_rrule_generator/src/ui/sections/end_section.dart';
 import 'package:calendar_rrule_generator/src/ui/sections/exclude_dates_section.dart';
 import 'package:calendar_rrule_generator/src/ui/rrule_display.dart';
+import 'package:calendar_rrule_generator/src/ui/rrule_localizations.dart';
 
 /// A Flutter widget for visually creating iCalendar RRULE recurrence rules for calendar events
 class RRuleGenerator extends StatefulWidget {
@@ -17,12 +18,15 @@ class RRuleGenerator extends StatefulWidget {
   final String? initialRRule;
   /// Start date of the event, used to determine default weekday for weekly recurrence
   final DateTime startDate;
+  /// Localization strings for the UI
+  final RRuleLocalizations localizations;
 
   const RRuleGenerator({
     super.key,
     required this.onRRuleChanged,
     this.initialRRule,
     required this.startDate,
+    this.localizations = RRuleLocalizations.english,
   });
 
   @override
@@ -68,6 +72,7 @@ class _RRuleGeneratorState extends State<RRuleGenerator> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = widget.localizations;
     return Card(
       elevation: 2,
       child: Padding(
@@ -77,14 +82,15 @@ class _RRuleGeneratorState extends State<RRuleGenerator> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Настройка повторения',
+              localizations.recurrenceTitle,
               style: Theme.of(context).textTheme.headlineSmall,
             ),
             const SizedBox(height: 20),
 
-            // Частота
+            // Frequency
             FrequencySection(
               frequency: _data.frequency,
+              localizations: localizations,
               onFrequencyChanged: (value) {
                 setState(() {
                   _data.frequency = value;
@@ -98,10 +104,11 @@ class _RRuleGeneratorState extends State<RRuleGenerator> {
             ),
             const SizedBox(height: 20),
 
-            // Интервал
+            // Interval
             IntervalSection(
               frequency: _data.frequency,
               interval: _data.interval,
+              localizations: localizations,
               onIntervalChanged: (value) {
                 setState(() {
                   _data.interval = value;
@@ -110,11 +117,12 @@ class _RRuleGeneratorState extends State<RRuleGenerator> {
               },
             ),
 
-            // Дни недели для WEEKLY
+            // Weekdays for WEEKLY
             if (_data.frequency == 'WEEKLY') ...[
               const SizedBox(height: 20),
               WeekdaysSection(
                 selectedWeekdays: _data.byday,
+                localizations: localizations,
                 onWeekdaysChanged: (value) {
                   setState(() {
                     _data.byday = value;
@@ -124,12 +132,13 @@ class _RRuleGeneratorState extends State<RRuleGenerator> {
               ),
             ],
 
-            // Часы дня (BYHOUR) - для DAILY, WEEKLY, MONTHLY, YEARLY
+            // Hours (BYHOUR) for DAILY, WEEKLY, MONTHLY, YEARLY
             if (_data.frequency != 'MINUTELY' && _data.frequency != 'HOURLY') ...[
               const SizedBox(height: 20),
               ByHourSection(
                 useByHour: _data.byhour.isNotEmpty,
                 selectedHours: _data.byhour,
+                localizations: localizations,
                 onUseByHourChanged: (value) {
                   setState(() {
                     if (!value) {
@@ -149,11 +158,12 @@ class _RRuleGeneratorState extends State<RRuleGenerator> {
 
             const SizedBox(height: 20),
 
-            // Окончание
+            // End condition
             EndSection(
               endType: _data.endType,
               count: _data.count,
               until: _data.until,
+              localizations: localizations,
               onEndTypeChanged: (value) {
                 setState(() {
                   _data.endType = value;
@@ -176,9 +186,10 @@ class _RRuleGeneratorState extends State<RRuleGenerator> {
 
             const SizedBox(height: 20),
 
-            // Исключенные даты
+            // Excluded dates
             ExcludeDatesSection(
               excludedDates: _data.exdate,
+              localizations: localizations,
               onExcludedDatesChanged: (value) {
                 setState(() {
                   _data.exdate = value;
@@ -189,8 +200,11 @@ class _RRuleGeneratorState extends State<RRuleGenerator> {
 
             const SizedBox(height: 20),
 
-            // Результат
-            RRULEDisplay(rrule: _parser.generate(_data)),
+            // Result
+            RRULEDisplay(
+              rrule: _parser.generate(_data),
+              localizations: localizations,
+            ),
           ],
         ),
       ),
@@ -204,11 +218,14 @@ class RRuleGeneratorSheet extends StatefulWidget {
   final String? initialRRule;
   /// Start date of the event, used to determine default weekday for weekly recurrence
   final DateTime startDate;
+  /// Localization strings for the UI
+  final RRuleLocalizations localizations;
 
   const RRuleGeneratorSheet({
     super.key,
     this.initialRRule,
     required this.startDate,
+    this.localizations = RRuleLocalizations.english,
   });
 
   @override
@@ -220,6 +237,7 @@ class _RRuleGeneratorSheetState extends State<RRuleGeneratorSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = widget.localizations;
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -242,10 +260,10 @@ class _RRuleGeneratorSheetState extends State<RRuleGeneratorSheet> {
             children: [
               TextButton(
                 onPressed: () => Navigator.of(context).pop(),
-                child: const Text('Отмена'),
+                child: Text(localizations.cancelAction),
               ),
               Text(
-                'Настройка повторений',
+                localizations.sheetTitle,
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -254,9 +272,9 @@ class _RRuleGeneratorSheetState extends State<RRuleGeneratorSheet> {
                 onPressed: () {
                   Navigator.of(context).pop(_currentRRule);
                 },
-                child: const Text(
-                  'Применить',
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                child: Text(
+                  localizations.applyAction,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
             ],
@@ -272,6 +290,7 @@ class _RRuleGeneratorSheetState extends State<RRuleGeneratorSheet> {
             child: RRuleGenerator(
               initialRRule: widget.initialRRule,
               startDate: widget.startDate,
+              localizations: localizations,
               onRRuleChanged: (rrule) {
                 _currentRRule = rrule;
               },
@@ -288,6 +307,7 @@ Future<String?> showRRuleGeneratorSheet(
   BuildContext context, {
   String? initialRRule,
   required DateTime startDate,
+  RRuleLocalizations localizations = RRuleLocalizations.english,
 }) {
   return showModalBottomSheet<String>(
     context: context,
@@ -302,14 +322,18 @@ Future<String?> showRRuleGeneratorSheet(
     builder: (context) => RRuleGeneratorSheet(
       initialRRule: initialRRule,
       startDate: startDate,
+      localizations: localizations,
     ),
   );
 }
 
 /// Helper to parse RRULE and return human-readable description
-String describeRRule(String? rrule) {
+String describeRRule(
+  String? rrule, {
+  RRuleLocalizations localizations = RRuleLocalizations.english,
+}) {
   if (rrule == null || rrule.isEmpty) {
-    return 'Без повторения';
+    return localizations.noRecurrence;
   }
 
   final parser = RRuleParser(DateTime.now());
@@ -318,57 +342,49 @@ String describeRRule(String? rrule) {
   String freqStr = '';
   switch (data.frequency) {
     case 'MINUTELY':
-      freqStr = data.interval == 1 ? 'Каждую минуту' : 'Каждые ${data.interval} мин.';
+      freqStr = localizations.describeFrequency(data.frequency, data.interval);
       break;
     case 'HOURLY':
-      freqStr = data.interval == 1 ? 'Каждый час' : 'Каждые ${data.interval} ч.';
+      freqStr = localizations.describeFrequency(data.frequency, data.interval);
       break;
     case 'DAILY':
-      freqStr = data.interval == 1 ? 'Ежедневно' : 'Каждые ${data.interval} дн.';
+      freqStr = localizations.describeFrequency(data.frequency, data.interval);
       break;
     case 'WEEKLY':
-      freqStr = data.interval == 1 ? 'Еженедельно' : 'Каждые ${data.interval} нед.';
+      freqStr = localizations.describeFrequency(data.frequency, data.interval);
       if (data.byday.isNotEmpty) {
         final dayNames = data.byday.map((d) {
-          switch (d) {
-            case 'MO': return 'Пн';
-            case 'TU': return 'Вт';
-            case 'WE': return 'Ср';
-            case 'TH': return 'Чт';
-            case 'FR': return 'Пт';
-            case 'SA': return 'Сб';
-            case 'SU': return 'Вс';
-            default: return d;
-          }
+          return localizations.weekdayShortLabel(d);
         }).join(', ');
         freqStr += ' ($dayNames)';
       }
       break;
     case 'MONTHLY':
-      freqStr = data.interval == 1 ? 'Ежемесячно' : 'Каждые ${data.interval} мес.';
+      freqStr = localizations.describeFrequency(data.frequency, data.interval);
       break;
     case 'YEARLY':
-      freqStr = data.interval == 1 ? 'Ежегодно' : 'Каждые ${data.interval} г.';
+      freqStr = localizations.describeFrequency(data.frequency, data.interval);
       break;
     default:
       return rrule;
   }
 
-  // Добавляем информацию о часах
+  // Add hour information.
   if (data.byhour.isNotEmpty) {
     data.byhour.sort();
     if (data.byhour.length <= 3) {
       final hoursStr = data.byhour.map((h) => '${h.toString().padLeft(2, '0')}:00').join(', ');
-      freqStr += ' в $hoursStr';
+      freqStr += ' ${localizations.timeAtPrefix} $hoursStr';
     } else {
-      freqStr += ' (${data.byhour.length} часов)';
+      freqStr += ' (${localizations.describeHourCount(data.byhour.length)})';
     }
   }
 
   if (data.endType == 'COUNT') {
-    freqStr += ', ${data.count} раз';
+    freqStr += ', ${localizations.describeCountOccurrences(data.count)}';
   } else if (data.endType == 'UNTIL') {
-    freqStr += ', до ${DateFormat('dd.MM.yyyy').format(data.until)}';
+    freqStr +=
+        ', ${localizations.describeUntilDate(DateFormat('dd.MM.yyyy').format(data.until))}';
   }
 
   return freqStr;

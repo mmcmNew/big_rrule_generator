@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:calendar_rrule_generator/src/ui/rrule_localizations.dart';
 
 /// Widget for selecting specific hours for recurrence
 /// 
@@ -27,6 +28,7 @@ class ByHourSection extends StatelessWidget {
   final List<int> selectedHours;
   final ValueChanged<bool> onUseByHourChanged;
   final ValueChanged<List<int>> onHoursChanged;
+  final RRuleLocalizations localizations;
   
   const ByHourSection({
     super.key,
@@ -34,11 +36,12 @@ class ByHourSection extends StatelessWidget {
     required this.selectedHours,
     required this.onUseByHourChanged,
     required this.onHoursChanged,
+    this.localizations = RRuleLocalizations.english,
   });
   
   @override
   Widget build(BuildContext context) {
-    // Часы от 0 до 23
+    // Hours from 0 to 23.
     final hours = List.generate(24, (i) => i);
 
     return Column(
@@ -51,13 +54,18 @@ class ByHourSection extends StatelessWidget {
               value: useByHour,
               onChanged: (value) => onUseByHourChanged(value!),
             ),
-            const Text('Повторять в определённые часы',
-                style: TextStyle(fontWeight: FontWeight.bold)),
+            Text(
+              localizations.byHourLabel,
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
           ],
         ),
         if (useByHour) ...[
           const SizedBox(height: 8),
-          const Text('Выберите часы:', style: TextStyle(fontSize: 12, color: Colors.grey)),
+          Text(
+            localizations.byHourHint,
+            style: const TextStyle(fontSize: 12, color: Colors.grey),
+          ),
           const SizedBox(height: 8),
           Wrap(
             spacing: 4,
@@ -85,30 +93,42 @@ class ByHourSection extends StatelessWidget {
             }).toList(),
           ),
           const SizedBox(height: 8),
-          // Быстрый выбор
+          // Quick presets.
           Wrap(
             spacing: 8,
             children: [
               ActionChip(
-                label: const Text('Рабочие (9-18)', style: TextStyle(fontSize: 11)),
+                label: Text(
+                  localizations.byHourPresetWorkday,
+                  style: const TextStyle(fontSize: 11),
+                ),
                 onPressed: () {
                   onHoursChanged([9, 10, 11, 12, 13, 14, 15, 16, 17, 18]);
                 },
               ),
               ActionChip(
-                label: const Text('Утро (6-12)', style: TextStyle(fontSize: 11)),
+                label: Text(
+                  localizations.byHourPresetMorning,
+                  style: const TextStyle(fontSize: 11),
+                ),
                 onPressed: () {
                   onHoursChanged([6, 7, 8, 9, 10, 11, 12]);
                 },
               ),
               ActionChip(
-                label: const Text('Каждые 2ч', style: TextStyle(fontSize: 11)),
+                label: Text(
+                  localizations.byHourPresetEveryTwoHours,
+                  style: const TextStyle(fontSize: 11),
+                ),
                 onPressed: () {
                   onHoursChanged([0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22]);
                 },
               ),
               ActionChip(
-                label: const Text('Сбросить', style: TextStyle(fontSize: 11)),
+                label: Text(
+                  localizations.byHourPresetReset,
+                  style: const TextStyle(fontSize: 11),
+                ),
                 onPressed: () {
                   onHoursChanged([]);
                 },
