@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:calendar_rrule_generator/src/utils/date_formatter.dart';
-import 'package:calendar_rrule_generator/src/ui/rrule_localizations.dart';
+import 'package:big_rrule_generator/src/utils/date_formatter.dart';
+import 'package:big_rrule_generator/src/ui/rrule_localizations.dart';
 
 /// Widget for managing excluded dates in recurrence
 /// 

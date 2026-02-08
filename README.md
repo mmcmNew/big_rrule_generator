@@ -1,4 +1,4 @@
-# calendar_rrule_generator
+# big_rrule_generator
 
 A Flutter widget for visually creating iCalendar RRULE recurrence rules for calendar events.
 
@@ -23,7 +23,7 @@ Add the package to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  calendar_rrule_generator: ^0.0.1
+  big_rrule_generator: ^0.0.1
 ```
 
 Install it:
@@ -35,7 +35,7 @@ flutter pub get
 Import it:
 
 ```dart
-import 'package:calendar_rrule_generator/calendar_rrule_generator.dart';
+import 'package:big_rrule_generator/big_rrule_generator.dart';
 ```
 
 ## Usage
@@ -86,5 +86,5 @@ For more information about RRULE format, see the [iCalendar RFC 5545 specificati
 
 ### Links
 
-- Repository: https://github.com/mmcmNew/calendar_rrule_generator
-- Issue tracker: https://github.com/mmcmNew/calendar_rrule_generator/issues
+- Repository: https://github.com/mmcmNew/big_rrule_generator
+- Issue tracker: https://github.com/mmcmNew/big_rrule_generator/issues

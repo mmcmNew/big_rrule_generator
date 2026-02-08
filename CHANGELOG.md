@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.0.1] - 2024-10-08
 
 ### Added
-- Initial release of the calendar_rrule_generator package
+- Initial release of the big_rrule_generator package
 - Visual widget for creating iCalendar RRULE recurrence rules
 - Support for all RRULE frequencies: MINUTELY, HOURLY, DAILY, WEEKLY, MONTHLY, YEARLY
 - Interval customization

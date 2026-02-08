@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:calendar_rrule_generator/src/logic/rrule_parser.dart';
-import 'package:calendar_rrule_generator/src/ui/sections/frequency_section.dart';
-import 'package:calendar_rrule_generator/src/ui/sections/interval_section.dart';
-import 'package:calendar_rrule_generator/src/ui/sections/weekdays_section.dart';
-import 'package:calendar_rrule_generator/src/ui/sections/byhour_section.dart';
-import 'package:calendar_rrule_generator/src/ui/sections/end_section.dart';
-import 'package:calendar_rrule_generator/src/ui/sections/exclude_dates_section.dart';
-import 'package:calendar_rrule_generator/src/ui/rrule_display.dart';
-import 'package:calendar_rrule_generator/src/ui/rrule_localizations.dart';
+import 'package:big_rrule_generator/src/logic/rrule_parser.dart';
+import 'package:big_rrule_generator/src/ui/sections/frequency_section.dart';
+import 'package:big_rrule_generator/src/ui/sections/interval_section.dart';
+import 'package:big_rrule_generator/src/ui/sections/weekdays_section.dart';
+import 'package:big_rrule_generator/src/ui/sections/byhour_section.dart';
+import 'package:big_rrule_generator/src/ui/sections/end_section.dart';
+import 'package:big_rrule_generator/src/ui/sections/exclude_dates_section.dart';
+import 'package:big_rrule_generator/src/ui/rrule_display.dart';
+import 'package:big_rrule_generator/src/ui/rrule_localizations.dart';
 
 /// A Flutter widget for visually creating iCalendar RRULE recurrence rules for calendar events
 class RRuleGenerator extends StatefulWidget {

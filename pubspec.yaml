@@ -1,9 +1,9 @@
-name: calendar_rrule_generator
+name: big_rrule_generator
 description: A Flutter widget for visually creating iCalendar RRULE recurrence rules for calendar events.
 version: 0.0.1
-homepage: https://github.com/mmcmNew/calendar_rrule_generator
-repository: https://github.com/mmcmNew/calendar_rrule_generator
-issue_tracker: https://github.com/mmcmNew/calendar_rrule_generator/issues
+homepage: https://github.com/mmcmNew/big_rrule_generator
+repository: https://github.com/mmcmNew/big_rrule_generator
+issue_tracker: https://github.com/mmcmNew/big_rrule_generator/issues
 topics:
   - flutter
   - calendar

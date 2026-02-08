@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:calendar_rrule_generator/src/logic/rrule_parser.dart';
+import 'package:big_rrule_generator/src/logic/rrule_parser.dart';
 
 void main() {
   group('RRuleParser', () {
