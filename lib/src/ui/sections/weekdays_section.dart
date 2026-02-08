@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:calendar_rrule_generator/src/ui/rrule_localizations.dart';
 
 /// Widget for selecting weekdays for weekly recurrence
 /// 
@@ -19,30 +20,35 @@ import 'package:flutter/material.dart';
 class WeekdaysSection extends StatelessWidget {
   final List<String> selectedWeekdays;
   final ValueChanged<List<String>> onWeekdaysChanged;
+  final RRuleLocalizations localizations;
   
   const WeekdaysSection({
     super.key,
     required this.selectedWeekdays,
     required this.onWeekdaysChanged,
+    this.localizations = RRuleLocalizations.english,
   });
   
   @override
   Widget build(BuildContext context) {
     final weekdays = [
-      {'value': 'MO', 'label': 'Пн'},
-      {'value': 'TU', 'label': 'Вт'},
-      {'value': 'WE', 'label': 'Ср'},
-      {'value': 'TH', 'label': 'Чт'},
-      {'value': 'FR', 'label': 'Пт'},
-      {'value': 'SA', 'label': 'Сб'},
-      {'value': 'SU', 'label': 'Вс'},
+      {'value': 'MO', 'label': localizations.weekdayShortLabel('MO')},
+      {'value': 'TU', 'label': localizations.weekdayShortLabel('TU')},
+      {'value': 'WE', 'label': localizations.weekdayShortLabel('WE')},
+      {'value': 'TH', 'label': localizations.weekdayShortLabel('TH')},
+      {'value': 'FR', 'label': localizations.weekdayShortLabel('FR')},
+      {'value': 'SA', 'label': localizations.weekdayShortLabel('SA')},
+      {'value': 'SU', 'label': localizations.weekdayShortLabel('SU')},
     ];
 
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('Дни недели:', style: TextStyle(fontWeight: FontWeight.bold)),
+        Text(
+          localizations.weekdaysLabel,
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
         const SizedBox(height: 8),
         Wrap(
           spacing: 8,

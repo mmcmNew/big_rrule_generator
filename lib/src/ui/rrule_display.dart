@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:calendar_rrule_generator/src/ui/rrule_localizations.dart';
 
 /// Widget for displaying the generated RRULE string
 /// 
@@ -13,10 +14,12 @@ import 'package:flutter/material.dart';
 /// ```
 class RRULEDisplay extends StatelessWidget {
   final String rrule;
+  final RRuleLocalizations localizations;
   
   const RRULEDisplay({
     super.key,
     required this.rrule,
+    this.localizations = RRuleLocalizations.english,
   });
   
   @override
@@ -30,9 +33,9 @@ class RRULEDisplay extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Результат RRULE:',
-            style: TextStyle(fontWeight: FontWeight.bold),
+          Text(
+            localizations.resultLabel,
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8),
           SelectableText(

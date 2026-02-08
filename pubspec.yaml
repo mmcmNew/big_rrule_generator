@@ -2,8 +2,14 @@ name: calendar_rrule_generator
 description: A Flutter widget for visually creating iCalendar RRULE recurrence rules for calendar events.
 version: 0.0.1
 homepage: https://github.com/mmcmNew/calendar_rrule_generator
-resolution: workspace
-publish_to: none
+repository: https://github.com/mmcmNew/calendar_rrule_generator
+issue_tracker: https://github.com/mmcmNew/calendar_rrule_generator/issues
+topics:
+  - flutter
+  - calendar
+  - rrule
+  - recurrence
+  - icalendar
 
 environment:
   sdk: ^3.10.7

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:calendar_rrule_generator/src/utils/date_formatter.dart';
+import 'package:calendar_rrule_generator/src/ui/rrule_localizations.dart';
 
 /// Widget for selecting end condition of recurrence
 /// 
@@ -12,6 +13,7 @@ class EndSection extends StatefulWidget {
   final ValueChanged<String> onEndTypeChanged;
   final ValueChanged<int> onCountChanged;
   final ValueChanged<DateTime> onUntilChanged;
+  final RRuleLocalizations localizations;
   
   const EndSection({
     super.key,
@@ -21,6 +23,7 @@ class EndSection extends StatefulWidget {
     required this.onEndTypeChanged,
     required this.onCountChanged,
     required this.onUntilChanged,
+    this.localizations = RRuleLocalizations.english,
   });
   
   @override
@@ -38,11 +41,15 @@ class _EndSectionState extends State<EndSection> {
   
   @override
   Widget build(BuildContext context) {
+    final localizations = widget.localizations;
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('Окончание:', style: TextStyle(fontWeight: FontWeight.bold)),
+        Text(
+          localizations.endLabel,
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
         const SizedBox(height: 8),
         
         ListTile(
@@ -51,7 +58,7 @@ class _EndSectionState extends State<EndSection> {
             groupValue: widget.endType,
             onChanged: (value) => widget.onEndTypeChanged(value!),
           ),
-          title: const Text('Никогда'),
+          title: Text(localizations.endNever),
           onTap: () => widget.onEndTypeChanged('NEVER'),
         ),
         
@@ -63,7 +70,7 @@ class _EndSectionState extends State<EndSection> {
           ),
           title: Row(
             children: [
-              const Text('После'),
+              Text(localizations.endAfter),
               const SizedBox(width: 12),
               SizedBox(
                 width: 80,
@@ -84,7 +91,7 @@ class _EndSectionState extends State<EndSection> {
                 ),
               ),
               const SizedBox(width: 12),
-              const Text('повторений'),
+              Text(localizations.endOccurrences),
             ],
           ),
           onTap: () => widget.onEndTypeChanged('COUNT'),
@@ -98,7 +105,7 @@ class _EndSectionState extends State<EndSection> {
           ),
           title: Row(
             children: [
-              const Text('До даты:'),
+              Text(localizations.endUntilDate),
               const SizedBox(width: 12),
               TextButton.icon(
                 icon: const Icon(Icons.calendar_today, size: 16),

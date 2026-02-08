@@ -13,6 +13,7 @@ export 'src/utils/date_formatter.dart';
 // UI - Main widgets
 export 'src/ui/rrule_generator.dart';
 export 'src/ui/rrule_display.dart';
+export 'src/ui/rrule_localizations.dart';
 
 // UI - Sections
 export 'src/ui/sections/frequency_section.dart';

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:calendar_rrule_generator/src/ui/rrule_localizations.dart';
 
 /// Widget for selecting recurrence interval
 /// 
@@ -21,46 +22,32 @@ class IntervalSection extends StatelessWidget {
   final String frequency;
   final int interval;
   final ValueChanged<int> onIntervalChanged;
+  final RRuleLocalizations localizations;
   
   const IntervalSection({
     super.key,
     required this.frequency,
     required this.interval,
     required this.onIntervalChanged,
+    this.localizations = RRuleLocalizations.english,
   });
-  
-  String _getIntervalLabel(String frequency) {
-    switch (frequency) {
-      case 'MINUTELY':
-        return 'минут';
-      case 'HOURLY':
-        return 'часов';
-      case 'DAILY':
-        return 'дней';
-      case 'WEEKLY':
-        return 'недель';
-      case 'MONTHLY':
-        return 'месяцев';
-      case 'YEARLY':
-        return 'лет';
-      default:
-        return 'единиц';
-    }
-  }
   
   @override
   Widget build(BuildContext context) {
-    final intervalLabel = _getIntervalLabel(frequency);
+    final intervalLabel = localizations.intervalUnitLabel(frequency);
     
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('Интервал:', style: TextStyle(fontWeight: FontWeight.bold)),
+        Text(
+          localizations.intervalLabel,
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
         const SizedBox(height: 8),
         Row(
           children: [
-            const Text('Каждые'),
+            Text(localizations.intervalEveryPrefix),
             const SizedBox(width: 12),
             SizedBox(
               width: 80,

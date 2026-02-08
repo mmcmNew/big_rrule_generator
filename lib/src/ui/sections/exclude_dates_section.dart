@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:calendar_rrule_generator/src/utils/date_formatter.dart';
+import 'package:calendar_rrule_generator/src/ui/rrule_localizations.dart';
 
 /// Widget for managing excluded dates in recurrence
 /// 
@@ -20,11 +21,13 @@ import 'package:calendar_rrule_generator/src/utils/date_formatter.dart';
 class ExcludeDatesSection extends StatefulWidget {
   final List<DateTime> excludedDates;
   final ValueChanged<List<DateTime>> onExcludedDatesChanged;
+  final RRuleLocalizations localizations;
   
   const ExcludeDatesSection({
     super.key,
     required this.excludedDates,
     required this.onExcludedDatesChanged,
+    this.localizations = RRuleLocalizations.english,
   });
   
   @override
@@ -34,6 +37,7 @@ class ExcludeDatesSection extends StatefulWidget {
 class _ExcludeDatesSectionState extends State<ExcludeDatesSection> {
   @override
   Widget build(BuildContext context) {
+    final localizations = widget.localizations;
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -41,11 +45,13 @@ class _ExcludeDatesSectionState extends State<ExcludeDatesSection> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text('Исключенные даты:',
-                style: TextStyle(fontWeight: FontWeight.bold)),
+            Text(
+              localizations.excludeDatesLabel,
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
             ElevatedButton.icon(
               icon: const Icon(Icons.add),
-              label: const Text('Добавить'),
+              label: Text(localizations.excludeDatesAdd),
               onPressed: () async {
                 final date = await showDatePicker(
                   context: context,
@@ -64,8 +70,10 @@ class _ExcludeDatesSectionState extends State<ExcludeDatesSection> {
         ),
         const SizedBox(height: 8),
         if (widget.excludedDates.isEmpty)
-          const Text('Нет исключенных дат',
-              style: TextStyle(color: Colors.grey)),
+          Text(
+            localizations.excludeDatesEmpty,
+            style: const TextStyle(color: Colors.grey),
+          ),
         if (widget.excludedDates.isNotEmpty)
           Wrap(
             spacing: 8,
