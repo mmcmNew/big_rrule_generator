@@ -7,13 +7,23 @@ import 'package:big_rrule_generator/src/ui/sections/weekdays_section.dart';
 import 'package:big_rrule_generator/src/ui/sections/byhour_section.dart';
 import 'package:big_rrule_generator/src/ui/sections/end_section.dart';
 import 'package:big_rrule_generator/src/ui/sections/exclude_dates_section.dart';
+import 'package:big_rrule_generator/src/ui/sections/include_dates_section.dart';
+import 'package:big_rrule_generator/src/ui/sections/byminute_section.dart';
+import 'package:big_rrule_generator/src/ui/sections/bysecond_section.dart';
+import 'package:big_rrule_generator/src/ui/sections/bymonth_section.dart';
+import 'package:big_rrule_generator/src/ui/sections/bymonthday_section.dart';
+import 'package:big_rrule_generator/src/ui/sections/byyearday_section.dart';
+import 'package:big_rrule_generator/src/ui/sections/byweekno_section.dart';
+import 'package:big_rrule_generator/src/ui/sections/bysetpos_section.dart';
+import 'package:big_rrule_generator/src/ui/sections/byday_ordinal_section.dart';
+import 'package:big_rrule_generator/src/ui/sections/week_start_section.dart';
 import 'package:big_rrule_generator/src/ui/rrule_display.dart';
 import 'package:big_rrule_generator/src/ui/rrule_localizations.dart';
 
 /// A Flutter widget for visually creating iCalendar RRULE recurrence rules for calendar events
 class RRuleGenerator extends StatefulWidget {
-  /// Callback when the RRULE string is generated or changed
-  final Function(String) onRRuleChanged;
+  /// Callback when the RRULE string/set is generated or changed
+  final ValueChanged<RRuleResult> onRRuleChanged;
   /// Initial RRULE string to parse and display (optional)
   final String? initialRRule;
   /// Start date of the event, used to determine default weekday for weekly recurrence
@@ -62,7 +72,8 @@ class _RRuleGeneratorState extends State<RRuleGenerator> {
 
   void _updateRRule() {
     final rrule = _parser.generate(_data);
-    widget.onRRuleChanged(rrule);
+    final rruleSet = _parser.generateSet(_data);
+    widget.onRRuleChanged(RRuleResult(rrule: rrule, rruleSet: rruleSet));
   }
 
   String _getWeekdayFromDate(DateTime date) {
@@ -132,29 +143,148 @@ class _RRuleGeneratorState extends State<RRuleGenerator> {
               ),
             ],
 
-            // Hours (BYHOUR) for DAILY, WEEKLY, MONTHLY, YEARLY
-            if (_data.frequency != 'MINUTELY' && _data.frequency != 'HOURLY') ...[
+            const SizedBox(height: 20),
+            ByHourSection(
+              useByHour: _data.byhour.isNotEmpty,
+              selectedHours: _data.byhour,
+              localizations: localizations,
+              onUseByHourChanged: (value) {
+                setState(() {
+                  if (!value) {
+                    _data.byhour.clear();
+                  }
+                  _updateRRule();
+                });
+              },
+              onHoursChanged: (value) {
+                setState(() {
+                  _data.byhour = value;
+                  _updateRRule();
+                });
+              },
+            ),
+
+            const SizedBox(height: 20),
+            ByMinuteSection(
+              selectedMinutes: _data.byminute,
+              localizations: localizations,
+              onMinutesChanged: (value) {
+                setState(() {
+                  _data.byminute = value;
+                  _updateRRule();
+                });
+              },
+            ),
+
+            const SizedBox(height: 20),
+            BySecondSection(
+              selectedSeconds: _data.bysecond,
+              localizations: localizations,
+              onSecondsChanged: (value) {
+                setState(() {
+                  _data.bysecond = value;
+                  _updateRRule();
+                });
+              },
+            ),
+
+            if (_data.frequency == 'MONTHLY' || _data.frequency == 'YEARLY') ...[
               const SizedBox(height: 20),
-              ByHourSection(
-                useByHour: _data.byhour.isNotEmpty,
-                selectedHours: _data.byhour,
+              ByMonthDaySection(
+                selectedDays: _data.bymonthday,
                 localizations: localizations,
-                onUseByHourChanged: (value) {
+                onDaysChanged: (value) {
                   setState(() {
-                    if (!value) {
-                      _data.byhour.clear();
-                    }
+                    _data.bymonthday = value;
                     _updateRRule();
                   });
                 },
-                onHoursChanged: (value) {
+              ),
+              const SizedBox(height: 20),
+              ByDayOrdinalSection(
+                selectedOrdinals: _data.bydayOrdinal,
+                localizations: localizations,
+                onOrdinalsChanged: (value) {
                   setState(() {
-                    _data.byhour = value;
+                    _data.bydayOrdinal = value;
                     _updateRRule();
                   });
                 },
               ),
             ],
+
+            if (_data.frequency == 'YEARLY') ...[
+              const SizedBox(height: 20),
+              ByMonthSection(
+                selectedMonths: _data.bymonth,
+                localizations: localizations,
+                onMonthsChanged: (value) {
+                  setState(() {
+                    _data.bymonth = value;
+                    _updateRRule();
+                  });
+                },
+              ),
+              const SizedBox(height: 20),
+              ByYearDaySection(
+                selectedDays: _data.byyearday,
+                localizations: localizations,
+                onDaysChanged: (value) {
+                  setState(() {
+                    _data.byyearday = value;
+                    _updateRRule();
+                  });
+                },
+              ),
+              const SizedBox(height: 20),
+              ByWeekNoSection(
+                selectedWeeks: _data.byweekno,
+                localizations: localizations,
+                onWeeksChanged: (value) {
+                  setState(() {
+                    _data.byweekno = value;
+                    _updateRRule();
+                  });
+                },
+              ),
+            ],
+
+            const SizedBox(height: 20),
+            ExpansionTile(
+              tilePadding: EdgeInsets.zero,
+              title: Text(
+                localizations.advancedOptionsLabel,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+              subtitle: Text(
+                localizations.advancedOptionsHint,
+                style: const TextStyle(fontSize: 12, color: Colors.grey),
+              ),
+              children: [
+                const SizedBox(height: 12),
+                WeekStartSection(
+                  weekStart: _data.weekStart,
+                  localizations: localizations,
+                  onWeekStartChanged: (value) {
+                    setState(() {
+                      _data.weekStart = value;
+                      _updateRRule();
+                    });
+                  },
+                ),
+                const SizedBox(height: 20),
+                BySetPosSection(
+                  selectedPositions: _data.bysetpos,
+                  localizations: localizations,
+                  onPositionsChanged: (value) {
+                    setState(() {
+                      _data.bysetpos = value;
+                      _updateRRule();
+                    });
+                  },
+                ),
+              ],
+            ),
 
             const SizedBox(height: 20),
 
@@ -200,6 +330,20 @@ class _RRuleGeneratorState extends State<RRuleGenerator> {
 
             const SizedBox(height: 20),
 
+            // Included dates (RDATE)
+            IncludeDatesSection(
+              includedDates: _data.rdate,
+              localizations: localizations,
+              onIncludedDatesChanged: (value) {
+                setState(() {
+                  _data.rdate = value;
+                  _updateRRule();
+                });
+              },
+            ),
+
+            const SizedBox(height: 20),
+
             // Result
             RRULEDisplay(
               rrule: _parser.generate(_data),
@@ -233,7 +377,7 @@ class RRuleGeneratorSheet extends StatefulWidget {
 }
 
 class _RRuleGeneratorSheetState extends State<RRuleGeneratorSheet> {
-  String _currentRRule = '';
+  RRuleResult? _currentResult;
 
   @override
   Widget build(BuildContext context) {
@@ -270,7 +414,7 @@ class _RRuleGeneratorSheetState extends State<RRuleGeneratorSheet> {
               ),
               TextButton(
                 onPressed: () {
-                  Navigator.of(context).pop(_currentRRule);
+                  Navigator.of(context).pop(_currentResult);
                 },
                 child: Text(
                   localizations.applyAction,
@@ -291,8 +435,8 @@ class _RRuleGeneratorSheetState extends State<RRuleGeneratorSheet> {
               initialRRule: widget.initialRRule,
               startDate: widget.startDate,
               localizations: localizations,
-              onRRuleChanged: (rrule) {
-                _currentRRule = rrule;
+              onRRuleChanged: (result) {
+                _currentResult = result;
               },
             ),
           ),
@@ -303,13 +447,13 @@ class _RRuleGeneratorSheetState extends State<RRuleGeneratorSheet> {
 }
 
 /// Helper to show the RRule generator sheet
-Future<String?> showRRuleGeneratorSheet(
+Future<RRuleResult?> showRRuleGeneratorSheet(
   BuildContext context, {
   String? initialRRule,
   required DateTime startDate,
   RRuleLocalizations localizations = RRuleLocalizations.english,
 }) {
-  return showModalBottomSheet<String>(
+  return showModalBottomSheet<RRuleResult>(
     context: context,
     isScrollControlled: true,
     useSafeArea: true,
@@ -342,6 +486,9 @@ String describeRRule(
   String freqStr = '';
   switch (data.frequency) {
     case 'MINUTELY':
+      freqStr = localizations.describeFrequency(data.frequency, data.interval);
+      break;
+    case 'SECONDLY':
       freqStr = localizations.describeFrequency(data.frequency, data.interval);
       break;
     case 'HOURLY':
