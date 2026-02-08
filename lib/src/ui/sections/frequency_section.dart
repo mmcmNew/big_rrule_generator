@@ -48,6 +48,10 @@ class FrequencySection extends StatelessWidget {
           ),
           items: [
             DropdownMenuItem(
+              value: 'SECONDLY',
+              child: Text(localizations.frequencyOptionLabel('SECONDLY')),
+            ),
+            DropdownMenuItem(
               value: 'MINUTELY',
               child: Text(localizations.frequencyOptionLabel('MINUTELY')),
             ),

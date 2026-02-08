@@ -14,6 +14,30 @@ class RRuleLocalizations {
   final String byHourPresetMorning;
   final String byHourPresetEveryTwoHours;
   final String byHourPresetReset;
+  final String byMinuteLabel;
+  final String byMinuteHint;
+  final String bySecondLabel;
+  final String bySecondHint;
+  final String byMonthLabel;
+  final String byMonthHint;
+  final String byMonthDayLabel;
+  final String byMonthDayHint;
+  final String byYearDayLabel;
+  final String byYearDayHint;
+  final String byWeekNoLabel;
+  final String byWeekNoHint;
+  final String bySetPosLabel;
+  final String bySetPosHint;
+  final String weekStartLabel;
+  final String weekStartHint;
+  final String byDayOrdinalLabel;
+  final String byDayOrdinalAdd;
+  final String byDayOrdinalEmpty;
+  final String includeDatesLabel;
+  final String includeDatesAdd;
+  final String includeDatesEmpty;
+  final String advancedOptionsLabel;
+  final String advancedOptionsHint;
   final String endLabel;
   final String endNever;
   final String endAfter;
@@ -44,6 +68,30 @@ class RRuleLocalizations {
     required this.byHourPresetMorning,
     required this.byHourPresetEveryTwoHours,
     required this.byHourPresetReset,
+    required this.byMinuteLabel,
+    required this.byMinuteHint,
+    required this.bySecondLabel,
+    required this.bySecondHint,
+    required this.byMonthLabel,
+    required this.byMonthHint,
+    required this.byMonthDayLabel,
+    required this.byMonthDayHint,
+    required this.byYearDayLabel,
+    required this.byYearDayHint,
+    required this.byWeekNoLabel,
+    required this.byWeekNoHint,
+    required this.bySetPosLabel,
+    required this.bySetPosHint,
+    required this.weekStartLabel,
+    required this.weekStartHint,
+    required this.byDayOrdinalLabel,
+    required this.byDayOrdinalAdd,
+    required this.byDayOrdinalEmpty,
+    required this.includeDatesLabel,
+    required this.includeDatesAdd,
+    required this.includeDatesEmpty,
+    required this.advancedOptionsLabel,
+    required this.advancedOptionsHint,
     required this.endLabel,
     required this.endNever,
     required this.endAfter,
@@ -75,6 +123,30 @@ class RRuleLocalizations {
     byHourPresetMorning: 'Morning (6-12)',
     byHourPresetEveryTwoHours: 'Every 2h',
     byHourPresetReset: 'Reset',
+    byMinuteLabel: 'Repeat at specific minutes',
+    byMinuteHint: 'Comma-separated minutes (0-59)',
+    bySecondLabel: 'Repeat at specific seconds',
+    bySecondHint: 'Comma-separated seconds (0-59)',
+    byMonthLabel: 'Months',
+    byMonthHint: 'Select months',
+    byMonthDayLabel: 'Month days',
+    byMonthDayHint: 'Comma-separated days (1-31 or -1..-31)',
+    byYearDayLabel: 'Year days',
+    byYearDayHint: 'Comma-separated days (1-366 or -1..-366)',
+    byWeekNoLabel: 'Week numbers',
+    byWeekNoHint: 'Comma-separated weeks (1-53 or -1..-53)',
+    bySetPosLabel: 'Set positions',
+    bySetPosHint: 'Comma-separated positions (1,2,-1)',
+    weekStartLabel: 'Week starts on',
+    weekStartHint: 'Choose week start day',
+    byDayOrdinalLabel: 'Ordinal weekdays',
+    byDayOrdinalAdd: 'Add ordinal weekday',
+    byDayOrdinalEmpty: 'No ordinal weekdays',
+    includeDatesLabel: 'Included dates:',
+    includeDatesAdd: 'Add',
+    includeDatesEmpty: 'No included dates',
+    advancedOptionsLabel: 'Advanced options',
+    advancedOptionsHint: 'Additional RRULE options',
     endLabel: 'Ends:',
     endNever: 'Never',
     endAfter: 'After',
@@ -115,6 +187,8 @@ class RRuleLocalizations {
         return 'Monthly';
       case 'YEARLY':
         return 'Yearly';
+      case 'SECONDLY':
+        return 'Every N seconds';
       default:
         return frequency;
     }
@@ -134,6 +208,8 @@ class RRuleLocalizations {
         return 'months';
       case 'YEARLY':
         return 'years';
+      case 'SECONDLY':
+        return 'seconds';
       default:
         return 'units';
     }
@@ -153,6 +229,8 @@ class RRuleLocalizations {
         return interval == 1 ? 'Monthly' : 'Every $interval months';
       case 'YEARLY':
         return interval == 1 ? 'Yearly' : 'Every $interval years';
+      case 'SECONDLY':
+        return interval == 1 ? 'Every second' : 'Every $interval seconds';
       default:
         return frequency;
     }

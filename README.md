@@ -7,7 +7,7 @@ This package provides a clean UI for generating RFC 5545 RRULE strings, perfect 
 ## Features
 
 - Visual interface for creating complex recurrence rules
-- Support for all RRULE frequencies: MINUTELY, HOURLY, DAILY, WEEKLY, MONTHLY, YEARLY
+- Support for all RRULE frequencies: SECONDLY, MINUTELY, HOURLY, DAILY, WEEKLY, MONTHLY, YEARLY
 - Interval customization (every N units)
 - End conditions: never, after N occurrences, until specific date
 - Weekly recurrence with day selection (e.g., every Monday and Friday)
@@ -45,14 +45,15 @@ import 'package:big_rrule_generator/big_rrule_generator.dart';
 Show the recurrence generator as a modal bottom sheet:
 
 ```dart
-final rrule = await showRRuleGeneratorSheet(
+final result = await showRRuleGeneratorSheet(
   context,
   initialRRule: 'FREQ=WEEKLY;INTERVAL=1;BYDAY=MO,WE,FR',
   startDate: DateTime.now(),
 );
 
-if (rrule != null) {
-  print('Generated RRULE: $rrule');
+if (result != null) {
+  print('Generated RRULE: ${result.rrule}');
+  print('Generated RRULE set: ${result.rruleSet.toRRuleSetString()}');
 }
 ```
 
@@ -62,9 +63,10 @@ if (rrule != null) {
 RRuleGenerator(
   initialRRule: 'FREQ=WEEKLY;INTERVAL=1;BYDAY=MO,WE,FR',
   startDate: DateTime.now(),
-  onRRuleChanged: (rrule) {
+  onRRuleChanged: (result) {
     // Handle the generated RRULE string
-    print(rrule);
+    print(result.rrule);
+    print(result.rruleSet.toRRuleSetString());
   },
 )
 ```
