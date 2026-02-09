@@ -51,6 +51,20 @@ class RRuleLocalizations {
   final String hoursSuffix;
   final String timeAtPrefix;
   final String untilPrefix;
+  final String weekdaysPrefix;
+  final String monthsPrefix;
+  final String monthDaysPrefix;
+  final String yearDaysPrefix;
+  final String weekNumbersPrefix;
+  final String setPositionsPrefix;
+  final String ordinalWeekdaysPrefix;
+  final String minutesPrefix;
+  final String secondsPrefix;
+  final String weekStartPrefix;
+  final String ordinalLast;
+  final String ordinalFromEndSuffix;
+  final String ordinalSuffix;
+  final bool useEnglishOrdinalRules;
   final Map<String, String> weekdayShortLabels;
 
   const RRuleLocalizations({
@@ -105,6 +119,20 @@ class RRuleLocalizations {
     required this.hoursSuffix,
     required this.timeAtPrefix,
     required this.untilPrefix,
+    required this.weekdaysPrefix,
+    required this.monthsPrefix,
+    required this.monthDaysPrefix,
+    required this.yearDaysPrefix,
+    required this.weekNumbersPrefix,
+    required this.setPositionsPrefix,
+    required this.ordinalWeekdaysPrefix,
+    required this.minutesPrefix,
+    required this.secondsPrefix,
+    required this.weekStartPrefix,
+    required this.ordinalLast,
+    required this.ordinalFromEndSuffix,
+    required this.ordinalSuffix,
+    required this.useEnglishOrdinalRules,
     required this.weekdayShortLabels,
   });
 
@@ -160,6 +188,20 @@ class RRuleLocalizations {
     hoursSuffix: 'hours',
     timeAtPrefix: 'at',
     untilPrefix: 'until',
+    weekdaysPrefix: 'on weekdays',
+    monthsPrefix: 'in months',
+    monthDaysPrefix: 'on month days',
+    yearDaysPrefix: 'on year days',
+    weekNumbersPrefix: 'on week numbers',
+    setPositionsPrefix: 'set positions',
+    ordinalWeekdaysPrefix: 'on ordinal weekdays',
+    minutesPrefix: 'at minutes',
+    secondsPrefix: 'at seconds',
+    weekStartPrefix: 'week starts on',
+    ordinalLast: 'last',
+    ordinalFromEndSuffix: 'from end',
+    ordinalSuffix: 'th',
+    useEnglishOrdinalRules: true,
     weekdayShortLabels: {
       'MO': 'Mon',
       'TU': 'Tue',
@@ -223,6 +265,20 @@ class RRuleLocalizations {
     hoursSuffix: 'часов',
     timeAtPrefix: 'в',
     untilPrefix: 'до',
+    weekdaysPrefix: 'по дням недели',
+    monthsPrefix: 'в месяцах',
+    monthDaysPrefix: 'по дням месяца',
+    yearDaysPrefix: 'по дням года',
+    weekNumbersPrefix: 'по номерам недель',
+    setPositionsPrefix: 'позиции в наборе',
+    ordinalWeekdaysPrefix: 'по порядковым дням недели',
+    minutesPrefix: 'в минуты',
+    secondsPrefix: 'в секунды',
+    weekStartPrefix: 'неделя начинается с',
+    ordinalLast: 'последний',
+    ordinalFromEndSuffix: 'с конца',
+    ordinalSuffix: '-й',
+    useEnglishOrdinalRules: false,
     weekdayShortLabels: {
       'MO': 'Пн',
       'TU': 'Вт',
@@ -304,4 +360,35 @@ class RRuleLocalizations {
   String describeCountOccurrences(int count) => '$count ${endOccurrences}';
 
   String describeUntilDate(String formattedDate) => '$untilPrefix $formattedDate';
+
+  String describeOrdinal(int ordinal) {
+    if (!useEnglishOrdinalRules) {
+      if (ordinal == -1) {
+        return ordinalLast;
+      }
+      if (ordinal < 0) {
+        return '${-ordinal}$ordinalSuffix $ordinalFromEndSuffix';
+      }
+      return '$ordinal$ordinalSuffix';
+    }
+    if (ordinal == -1) {
+      return ordinalLast;
+    }
+    if (ordinal < 0) {
+      return '${-ordinal}${ordinalSuffix} ${ordinalFromEndSuffix}';
+    }
+    if (ordinal % 100 >= 11 && ordinal % 100 <= 13) {
+      return '${ordinal}th';
+    }
+    switch (ordinal % 10) {
+      case 1:
+        return '${ordinal}st';
+      case 2:
+        return '${ordinal}nd';
+      case 3:
+        return '${ordinal}rd';
+      default:
+        return '${ordinal}th';
+    }
+  }
 }
