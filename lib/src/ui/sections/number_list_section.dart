@@ -22,24 +22,30 @@ class NumberListSection extends StatefulWidget {
 
 class _NumberListSectionState extends State<NumberListSection> {
   late final TextEditingController _controller;
+  late final FocusNode _focusNode;
 
   @override
   void initState() {
     super.initState();
     _controller = TextEditingController(text: _format(widget.values));
+    _focusNode = FocusNode();
   }
 
   @override
   void didUpdateWidget(covariant NumberListSection oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.values != widget.values) {
-      _controller.text = _format(widget.values);
+    if (oldWidget.values != widget.values && !_focusNode.hasFocus) {
+      final nextText = _format(widget.values);
+      if (_controller.text != nextText) {
+        _controller.text = nextText;
+      }
     }
   }
 
   @override
   void dispose() {
     _controller.dispose();
+    _focusNode.dispose();
     super.dispose();
   }
 
@@ -56,6 +62,7 @@ class _NumberListSectionState extends State<NumberListSection> {
         const SizedBox(height: 8),
         TextFormField(
           controller: _controller,
+          focusNode: _focusNode,
           decoration: InputDecoration(
             border: const OutlineInputBorder(),
             contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),

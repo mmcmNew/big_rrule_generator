@@ -32,11 +32,28 @@ class EndSection extends StatefulWidget {
 
 class _EndSectionState extends State<EndSection> {
   late DateTime _currentUntil;
+  late final TextEditingController _countController;
   
   @override
   void initState() {
     super.initState();
     _currentUntil = widget.until;
+    _countController = TextEditingController(text: widget.count.toString());
+  }
+
+  @override
+  void didUpdateWidget(covariant EndSection oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    final nextCountText = widget.count.toString();
+    if (_countController.text != nextCountText) {
+      _countController.text = nextCountText;
+    }
+  }
+
+  @override
+  void dispose() {
+    _countController.dispose();
+    super.dispose();
   }
   
   @override
@@ -75,7 +92,7 @@ class _EndSectionState extends State<EndSection> {
               SizedBox(
                 width: 80,
                 child: TextFormField(
-                  initialValue: widget.count.toString(),
+                  controller: _countController,
                   keyboardType: TextInputType.number,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
