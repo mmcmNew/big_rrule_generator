@@ -46,6 +46,7 @@ class RRuleGenerator extends StatefulWidget {
 class _RRuleGeneratorState extends State<RRuleGenerator> {
   late RRuleParser _parser;
   late RRuleData _data;
+  bool _useByHour = false;
 
   @override
   void initState() {
@@ -58,6 +59,7 @@ class _RRuleGeneratorState extends State<RRuleGenerator> {
     } else {
       _data = RRuleData();
     }
+    _useByHour = _data.byhour.isNotEmpty;
 
     // Ensure weekday is set for weekly recurrence
     if (_data.frequency == 'WEEKLY' && _data.byday.isEmpty) {
@@ -145,11 +147,12 @@ class _RRuleGeneratorState extends State<RRuleGenerator> {
 
             const SizedBox(height: 20),
             ByHourSection(
-              useByHour: _data.byhour.isNotEmpty,
+              useByHour: _useByHour,
               selectedHours: _data.byhour,
               localizations: localizations,
               onUseByHourChanged: (value) {
                 setState(() {
+                  _useByHour = value;
                   if (!value) {
                     _data.byhour.clear();
                   }
@@ -159,6 +162,9 @@ class _RRuleGeneratorState extends State<RRuleGenerator> {
               onHoursChanged: (value) {
                 setState(() {
                   _data.byhour = value;
+                  if (value.isNotEmpty) {
+                    _useByHour = true;
+                  }
                   _updateRRule();
                 });
               },
@@ -483,6 +489,26 @@ String describeRRule(
   final parser = RRuleParser(DateTime.now());
   final data = parser.parse(rrule);
 
+  String describeOrdinalWeekday(String value) {
+    final match = RegExp(r'^([+-]?\\d+)([A-Z]{2})$').firstMatch(value);
+    if (match == null) {
+      return value;
+    }
+    final ordinal = int.tryParse(match.group(1) ?? '');
+    final weekday = match.group(2) ?? '';
+    if (ordinal == null) {
+      return value;
+    }
+    final ordinalText = localizations.describeOrdinal(ordinal);
+    final weekdayText = localizations.weekdayShortLabel(weekday);
+    return '$ordinalText $weekdayText';
+  }
+
+  String describeIntList(List<int> values) {
+    final sorted = List<int>.from(values)..sort();
+    return sorted.join(', ');
+  }
+
   String freqStr = '';
   switch (data.frequency) {
     case 'MINUTELY':
@@ -516,6 +542,52 @@ String describeRRule(
       return rrule;
   }
 
+  final details = <String>[];
+
+  if (data.byday.isNotEmpty && data.frequency != 'WEEKLY') {
+    final dayNames = data.byday.map((d) => localizations.weekdayShortLabel(d)).join(', ');
+    details.add('${localizations.weekdaysPrefix} $dayNames');
+  }
+
+  if (data.bydayOrdinal.isNotEmpty) {
+    final ordinals = data.bydayOrdinal.map(describeOrdinalWeekday).join(', ');
+    details.add('${localizations.ordinalWeekdaysPrefix} $ordinals');
+  }
+
+  if (data.bymonth.isNotEmpty) {
+    details.add('${localizations.monthsPrefix} ${describeIntList(data.bymonth)}');
+  }
+
+  if (data.bymonthday.isNotEmpty) {
+    details.add('${localizations.monthDaysPrefix} ${describeIntList(data.bymonthday)}');
+  }
+
+  if (data.byyearday.isNotEmpty) {
+    details.add('${localizations.yearDaysPrefix} ${describeIntList(data.byyearday)}');
+  }
+
+  if (data.byweekno.isNotEmpty) {
+    details.add('${localizations.weekNumbersPrefix} ${describeIntList(data.byweekno)}');
+  }
+
+  if (data.bysetpos.isNotEmpty) {
+    details.add('${localizations.setPositionsPrefix} ${describeIntList(data.bysetpos)}');
+  }
+
+  if (data.byminute.isNotEmpty) {
+    details.add('${localizations.minutesPrefix} ${describeIntList(data.byminute)}');
+  }
+
+  if (data.bysecond.isNotEmpty) {
+    details.add('${localizations.secondsPrefix} ${describeIntList(data.bysecond)}');
+  }
+
+  if (data.weekStart.isNotEmpty && data.weekStart != 'MO') {
+    details.add(
+      '${localizations.weekStartPrefix} ${localizations.weekdayShortLabel(data.weekStart)}',
+    );
+  }
+
   // Add hour information.
   if (data.byhour.isNotEmpty) {
     data.byhour.sort();
@@ -525,6 +597,10 @@ String describeRRule(
     } else {
       freqStr += ' (${localizations.describeHourCount(data.byhour.length)})';
     }
+  }
+
+  if (details.isNotEmpty) {
+    freqStr += ' (${details.join('; ')})';
   }
 
   if (data.endType == 'COUNT') {
