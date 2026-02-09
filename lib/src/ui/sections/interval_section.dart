@@ -18,7 +18,7 @@ import 'package:big_rrule_generator/src/ui/rrule_localizations.dart';
 ///   },
 /// )
 /// ```
-class IntervalSection extends StatelessWidget {
+class IntervalSection extends StatefulWidget {
   final String frequency;
   final int interval;
   final ValueChanged<int> onIntervalChanged;
@@ -33,26 +33,54 @@ class IntervalSection extends StatelessWidget {
   });
   
   @override
+  State<IntervalSection> createState() => _IntervalSectionState();
+}
+
+class _IntervalSectionState extends State<IntervalSection> {
+  late final TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController(text: widget.interval.toString());
+  }
+
+  @override
+  void didUpdateWidget(covariant IntervalSection oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    final nextText = widget.interval.toString();
+    if (_controller.text != nextText) {
+      _controller.text = nextText;
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final intervalLabel = localizations.intervalUnitLabel(frequency);
+    final intervalLabel = widget.localizations.intervalUnitLabel(widget.frequency);
     
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          localizations.intervalLabel,
+          widget.localizations.intervalLabel,
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 8),
         Row(
           children: [
-            Text(localizations.intervalEveryPrefix),
+            Text(widget.localizations.intervalEveryPrefix),
             const SizedBox(width: 12),
             SizedBox(
               width: 80,
               child: TextFormField(
-                initialValue: interval.toString(),
+                controller: _controller,
                 keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
@@ -61,7 +89,7 @@ class IntervalSection extends StatelessWidget {
                 onChanged: (value) {
                   final intValue = int.tryParse(value) ?? 1;
                   if (intValue > 0) {
-                    onIntervalChanged(intValue);
+                    widget.onIntervalChanged(intValue);
                   }
                 },
               ),
