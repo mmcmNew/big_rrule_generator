@@ -171,24 +171,87 @@ class RRuleLocalizations {
     },
   );
 
+  static const RRuleLocalizations russian = RRuleLocalizations(
+    recurrenceTitle: 'Настройки повторения',
+    sheetTitle: 'Настройки повторения',
+    cancelAction: 'Отмена',
+    applyAction: 'Применить',
+    frequencyLabel: 'Частота:',
+    intervalLabel: 'Интервал:',
+    intervalEveryPrefix: 'Каждые',
+    weekdaysLabel: 'Дни недели:',
+    byHourLabel: 'Повторять в определённые часы',
+    byHourHint: 'Выберите часы:',
+    byHourPresetWorkday: 'Рабочий день (9-18)',
+    byHourPresetMorning: 'Утро (6-12)',
+    byHourPresetEveryTwoHours: 'Каждые 2ч',
+    byHourPresetReset: 'Сбросить',
+    byMinuteLabel: 'Повторять в определённые минуты',
+    byMinuteHint: 'Минуты через запятую (0-59)',
+    bySecondLabel: 'Повторять в определённые секунды',
+    bySecondHint: 'Секунды через запятую (0-59)',
+    byMonthLabel: 'Месяцы',
+    byMonthHint: 'Выберите месяцы',
+    byMonthDayLabel: 'Дни месяца',
+    byMonthDayHint: 'Дни через запятую (1-31 или -1..-31)',
+    byYearDayLabel: 'Дни года',
+    byYearDayHint: 'Дни через запятую (1-366 или -1..-366)',
+    byWeekNoLabel: 'Номера недель',
+    byWeekNoHint: 'Недели через запятую (1-53 или -1..-53)',
+    bySetPosLabel: 'Позиции в наборе',
+    bySetPosHint: 'Позиции через запятую (1,2,-1)',
+    weekStartLabel: 'Неделя начинается с',
+    weekStartHint: 'Выберите день начала недели',
+    byDayOrdinalLabel: 'Повторение в определенный номер дня (например каждый первый понедельник)',
+    byDayOrdinalAdd: 'Добавить порядковый день недели',
+    byDayOrdinalEmpty: 'Нет порядковых дней недели',
+    includeDatesLabel: 'Включённые даты:',
+    includeDatesAdd: 'Добавить',
+    includeDatesEmpty: 'Нет включённых дат',
+    advancedOptionsLabel: 'Дополнительные опции',
+    advancedOptionsHint: 'Дополнительные параметры RRULE',
+    endLabel: 'Завершается:',
+    endNever: 'Никогда',
+    endAfter: 'После',
+    endOccurrences: 'повторений',
+    endUntilDate: 'До даты:',
+    excludeDatesLabel: 'Исключённые даты:',
+    excludeDatesAdd: 'Добавить',
+    excludeDatesEmpty: 'Нет исключённых дат',
+    resultLabel: 'Результат RRULE:',
+    noRecurrence: 'Без повторения',
+    hoursSuffix: 'часов',
+    timeAtPrefix: 'в',
+    untilPrefix: 'до',
+    weekdayShortLabels: {
+      'MO': 'Пн',
+      'TU': 'Вт',
+      'WE': 'Ср',
+      'TH': 'Чт',
+      'FR': 'Пт',
+      'SA': 'Сб',
+      'SU': 'Вс',
+    },
+  );
+
   String weekdayShortLabel(String value) => weekdayShortLabels[value] ?? value;
 
   String frequencyOptionLabel(String frequency) {
     switch (frequency) {
       case 'MINUTELY':
-        return 'Every N minutes';
+        return 'Каждые N минут';
       case 'HOURLY':
-        return 'Every N hours';
+        return 'Каждые N часов';
       case 'DAILY':
-        return 'Daily';
+        return 'Ежедневно';
       case 'WEEKLY':
-        return 'Weekly';
+        return 'Еженедельно';
       case 'MONTHLY':
-        return 'Monthly';
+        return 'Ежемесячно';
       case 'YEARLY':
-        return 'Yearly';
+        return 'Ежегодно';
       case 'SECONDLY':
-        return 'Every N seconds';
+        return 'Каждые N секунд';
       default:
         return frequency;
     }
@@ -197,40 +260,40 @@ class RRuleLocalizations {
   String intervalUnitLabel(String frequency) {
     switch (frequency) {
       case 'MINUTELY':
-        return 'minutes';
+        return 'минут';
       case 'HOURLY':
-        return 'hours';
+        return 'часов';
       case 'DAILY':
-        return 'days';
+        return 'дней';
       case 'WEEKLY':
-        return 'weeks';
+        return 'недель';
       case 'MONTHLY':
-        return 'months';
+        return 'месяцев';
       case 'YEARLY':
-        return 'years';
+        return 'год(-а)';
       case 'SECONDLY':
-        return 'seconds';
+        return 'секунд';
       default:
-        return 'units';
+        return 'единиц';
     }
   }
 
   String describeFrequency(String frequency, int interval) {
     switch (frequency) {
       case 'MINUTELY':
-        return interval == 1 ? 'Every minute' : 'Every $interval minutes';
+        return interval == 1 ? 'Каждую минуту' : 'Каждые $interval минут';
       case 'HOURLY':
-        return interval == 1 ? 'Every hour' : 'Every $interval hours';
+        return interval == 1 ? 'Каждый час' : 'Каждые $interval часов';
       case 'DAILY':
-        return interval == 1 ? 'Daily' : 'Every $interval days';
+        return interval == 1 ? 'Ежедневно' : 'Каждые $interval дней';
       case 'WEEKLY':
-        return interval == 1 ? 'Weekly' : 'Every $interval weeks';
+        return interval == 1 ? 'Еженедельно' : 'Каждые $interval недель';
       case 'MONTHLY':
-        return interval == 1 ? 'Monthly' : 'Every $interval months';
+        return interval == 1 ? 'Ежемесячно' : 'Каждые $interval месяцев';
       case 'YEARLY':
-        return interval == 1 ? 'Yearly' : 'Every $interval years';
+        return interval == 1 ? 'Ежегодно' : 'Каждые $interval лет';
       case 'SECONDLY':
-        return interval == 1 ? 'Every second' : 'Every $interval seconds';
+        return interval == 1 ? 'Каждую секунду' : 'Каждые $interval секунд';
       default:
         return frequency;
     }
